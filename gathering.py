@@ -1,6 +1,6 @@
 import botometer
 import pprint
-
+import pandas
 rapidapi_key = "Enter Your Key"
 twitter_app_auth = {
     'consumer_key': 'Enter Your Key',
@@ -24,6 +24,9 @@ for screen_name, result in bom.check_accounts_in(accounts):
     print(screen_name)
     print(result)
     #Do stuff with 'screen_name' and 'result'
+
+accounts_info = []
+accounts_place = []
 
 for screen_name, result in bom.check_accounts_in(accounts):
     pprint.pprint(result)
@@ -55,3 +58,14 @@ for screen_name, result in bom.check_accounts_in(accounts):
                 "self-declared": result['display_scores']['universal']['self_declared'],
                 "spammer": result['display_scores']['universal']['spammer'],
             }
+
+    accounts_info.append(row)
+    accounts_place.append(screen_name)
+
+    print(f'{result["user"]["user_data"]["id_str"]} has been processed.')  # you can then add it to a dataframe or do whatever you want to here with the row
+    except Exception as e:
+    print("{} Could not be fetched:  {}".format(id, e))
+
+
+accounts_info_df = pandas.DataFrame(accounts_info, index=accounts_place)
+accounts_info_df.to_csv('completed_twitter_info_v2.csv')
