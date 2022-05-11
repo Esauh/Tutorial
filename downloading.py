@@ -48,6 +48,28 @@ for id, result in bom.check_accounts_in(ids):
                  bot_eng = pd.concat([human_eng, row], ignore_index=True)
             elif (training_set.iat[ids.index(id), 1]).lower() == 'organization':
                 org_eng = pd.concat([human_eng, row], ignore_index=True)
+        else:
+            row = pd.DataFrame([[
+                result['display_scores']['universal']['astroturf'],
+                result['display_scores']['universal']['fake_follower'],
+                result['display_scores']['universal']['financial'],
+                result['display_scores']['universal']['other'],
+                result['display_scores']['universal']['overall'],
+                result['display_scores']['universal']['self_declared'],
+                result['display_scores']['universal']['spammer']]],
+                columns=["astroturf", "fake follower", "financial",
+                         "other", "overall", "self-declared", "spammer"])
+
+            if (training_set.iat[ids.index(id), 1]).lower() == 'human':
+                human_univ = pd.concat([human_eng, row], ignore_index=True)
+            elif (training_set.iat[ids.index(id), 1]).lower() == 'bot':
+                bot_univ = pd.concat([human_eng, row], ignore_index=True)
+            elif (training_set.iat[ids.index(id), 1]).lower() == 'organization':
+                org_univ = pd.concat([human_eng, row], ignore_index=True)
+        print(f'{id} has been processed.')
+    except Exception as e:
+        print("{} could not be fetched {}".format(id, e))
+
 
 
 
