@@ -27,3 +27,28 @@ bot_univ = pd.DataFrame(columns=["astroturf", "fake follower", "financial",
                                   "other", "overall", "self-declared", "spammer"])
 org_univ = pd.DataFrame(columns=["astroturf", "fake follower", "financial",
                                   "other", "overall", "self-declared", "spammer"])
+
+for id, result in bom.check_accounts_in(ids):
+    try:
+        if result["user"]["majority_lang"] == 'en':
+            row = pd.DataFrame([[
+                result['display_scores']['english']['astroturf'],
+                result['display_scores']['english']['fake_follower'],
+                result['display_scores']['english']['financial'],
+                result['display_scores']['english']['other'],
+                result['display_scores']['english']['overall'],
+                result['display_scores']['english']['self_declared'],
+                result['display_scores']['english']['spammer']]],
+                columns=["astroturf", "fake follower", "financial",
+                         "other", "overall", "self-declared", "spammer"])
+
+            if (training_set.iat[ids.index(id), 1]).lower() == 'human':
+                human_eng = pd.concat([human_eng, row], ignore_index=True)
+            elif (training_set.iat[ids.index(id), 1]).lower() == 'bot':
+                 bot_eng = pd.concat([human_eng, row], ignore_index=True)
+            elif (training_set.iat[ids.index(id), 1]).lower() == 'organization':
+                org_eng = pd.concat([human_eng, row], ignore_index=True)
+
+
+
+
