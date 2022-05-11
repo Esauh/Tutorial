@@ -1,4 +1,5 @@
 import botometer
+import pprint
 
 rapidapi_key = "Enter Your Key"
 twitter_app_auth = {
@@ -23,3 +24,34 @@ for screen_name, result in bom.check_accounts_in(accounts):
     print(screen_name)
     print(result)
     #Do stuff with 'screen_name' and 'result'
+
+for screen_name, result in bom.check_accounts_in(accounts):
+    pprint.pprint(result)
+    row = {}
+    # we use a try-catch because we do not want it to stop execution if botometer fails to get stats on an account.
+    try:
+        if(result["user"]["majority_lang"] == 'en'):
+# use the english results
+            row = {
+                "id": result["user"]["user_data"]["id_str"],
+                "CAP": result['cap']['english'],
+                "astroturf": result['display_scores']['english']['astroturf'],
+                "fake_follower": result['display_scores']['english']['fake_follower'],
+                "financial": result['display_scores']['english']['financial'],
+                "other": result['display_scores']['english']['other'],
+                "overall": result['display_scores']['english']['overall'],
+                "self-declared": result['display_scores']['english']['self_declared'],
+                "spammer": result['display_scores']['english']['spammer'],
+            }
+        else:
+            row = {
+                "id": result["user"]["user_data"]["id_str"],
+                "CAP": result['cap']['universal'],
+                "astroturf": result['display_scores']['universal']['astroturf'],
+                "fake_follower": result['display_scores']['universal']['fake_follower'],
+                "financial": result['display_scores']['universal']['financial'],
+                "other": result['display_scores']['universal']['other'],
+                "overall": result['display_scores']['universal']['overall'],
+                "self-declared": result['display_scores']['universal']['self_declared'],
+                "spammer": result['display_scores']['universal']['spammer'],
+            }
