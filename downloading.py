@@ -70,6 +70,19 @@ for id, result in bom.check_accounts_in(ids):
     except Exception as e:
         print("{} could not be fetched {}".format(id, e))
 
+human_eng = human_eng.astype(float)
+bot_eng = bot_eng.astype(float)
+org_eng = org_eng.astype(float)
+human_univ = human_univ.astype(float)
+bot_univ = bot_univ.astype(float)
+org_univ = org_univ.astype(float)
+
+eng_merged = pd.concat([human_eng, bot_eng, org_eng], axis=1, keys=['human', 'bot', 'organization'])
+eng_merged.to_csv("Enter Your CSV File Destination", index=False)
+univ_merged = pd.concat([human_univ, bot_univ, org_univ], axis=1, keys=['human', 'bot', 'organization'])
+eng_merged.to_csv("Enter Your CSV File Destination", index=False)
+
+
 
 
 
